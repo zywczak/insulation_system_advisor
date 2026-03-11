@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import IconTextBlock from './icontextbloick';
+import IconTextBlock from '../icontextbloick';
 import { NumberInput } from './Numberinput';
 import { RadioInput } from './Radioinput';
 import { SliderInput } from './Sliderinput';

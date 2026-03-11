@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Typography, FormControl } from '@mui/material';
-import { FieldHeader } from './Fieldheader';
+import { FieldHeader } from '../Fieldheader';
 
 export interface RadioOption {
   value: string;

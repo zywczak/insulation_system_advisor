@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, TextField } from '@mui/material';
-import { FieldHeader } from './Fieldheader';
+import { FieldHeader } from '../Fieldheader';
 
 export interface NumberInputProps {
   readonly label: string;

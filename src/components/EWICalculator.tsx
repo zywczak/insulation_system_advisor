@@ -1,7 +1,7 @@
 import { useCalculator } from '@/hooks/useCalculator';
 import { StepProgress } from './StepProgress';
 import { Step5Results } from './Results/Results';
-import { DynamicStepRenderer } from './DynamicStepRenderer';
+import { DynamicStepRenderer } from './DynamicSteps/DynamicStepRenderer';
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import Header from './header';
