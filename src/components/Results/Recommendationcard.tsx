@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 import InsightsIcon from "../../assets/insights.svg";
 
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 type Tier = "primary" | "alternative" | "aspirational" | "viable";
