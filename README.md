@@ -63,7 +63,3 @@ Projekt wykorzystuje React 18+ z TypeScript i nowoczesny stack frontendowy. Apli
 - **Engine** - logika biznesowa i algorytmy oceny
 - **Data** - konfiguracja i dane statyczne
 - **Types** - bezpieczeństwo typów
-
-## Licencja
-
-[Określ typ licencji]
