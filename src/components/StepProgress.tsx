@@ -1,19 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Box, Typography, ButtonBase } from '@mui/material';
-import { steps } from '@/data/stepdata';
+import { steps } from '@/data/steps/stepdata';
 
 interface StepProgressProps {
   readonly currentStep: number;
   readonly totalSteps: number;
-  readonly canProceed: (step: number) => boolean;
   readonly onStepClick: (step: number) => void;
+  readonly canProceedCurrent: boolean;
 }
 
 export function StepProgress({
   currentStep,
   totalSteps,
-  canProceed,
   onStepClick,
+  canProceedCurrent,
 }: StepProgressProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [showLabels, setShowLabels] = useState(true);
@@ -41,11 +41,11 @@ export function StepProgress({
   const dynamicStepLabels = steps.map(s => s.name);
   const allStepLabels = [...dynamicStepLabels, 'Results'];
 
-  const completedSteps =
-  currentStep - (canProceed(currentStep) ? 0 : 1);
+  // Count current step as completed if all required fields are filled (Next enabled)
+  const completedSteps = canProceedCurrent ? currentStep : currentStep - 1;
 
   const percentComplete = Math.round(
-    ((Math.min(completedSteps, total) ) /
+    (Math.max(0, Math.min(completedSteps, total)) /
       Math.max(total, 1)) *
       100,
   );
@@ -56,10 +56,7 @@ export function StepProgress({
   }));
 
   const isAccessible = (stepNumber: number) => {
-    return (
-      stepNumber <= currentStep ||
-      (stepNumber === currentStep + 1 && canProceed(currentStep))
-    );
+    return stepNumber <= currentStep;
   };
 
   return (

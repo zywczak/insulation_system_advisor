@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Card, Divider, } from "@mui/material";
-import CalculatorIntro from "../CalculatorIntro";
+import CalculatorIntro from "../AdvisorIntro";
 import Monitor from "../../assets/monitor.svg";
 import Building from "../../assets/building.svg";
 import Performance from "../../assets/performance.svg";

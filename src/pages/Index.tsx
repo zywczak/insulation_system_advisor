@@ -1,4 +1,4 @@
-import { EWICalculator } from '@/components/EWICalculator';
+import AdvisorWizard from '@/components/AdvisorWizard';
 import InsulationAssessment from '@/components/StartView/Insulationassessment';
 import { useSearchParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
@@ -54,7 +54,7 @@ const Index = () => {
         <InsulationAssessment onStartAssessment={() => setShowStartView(false)} />
       ) : (
         <Box sx={{ maxWidth: 'lg', mx: 'auto', px: isEmbed ? 0 : 2 }}>
-          <EWICalculator />
+          <AdvisorWizard />
         </Box>
       )}
     </Box>

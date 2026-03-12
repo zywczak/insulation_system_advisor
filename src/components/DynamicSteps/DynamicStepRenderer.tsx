@@ -4,14 +4,16 @@ import { NumberInput } from './Numberinput';
 import { RadioInput } from './Radioinput';
 import { SliderInput } from './Sliderinput';
 import Description from './Description';
-import { steps } from '@/data/stepdata';
+import { steps } from '@/data/steps/stepdata';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
+export type FormValue = string | number | string[] | boolean | null;
+
 interface DynamicStepRendererProps {
   readonly stepIndex: number;
-  readonly formData: Record<string, string | number>;
-  readonly onChange: (name: string, value: string | number) => void;
+  readonly formData: Record<string, FormValue>;
+  readonly onChange: (name: string, value: FormValue) => void;
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -25,10 +27,10 @@ export function DynamicStepRenderer({ stepIndex, formData, onChange }: DynamicSt
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <IconTextBlock 
-        title={step.name} 
-        subtitle={step.description} 
-        icon={step.icon} 
+      <IconTextBlock
+        title={step.name}
+        subtitle={step.description}
+        icon={step.icon}
       />
 
       {step.helpText && (
@@ -37,22 +39,41 @@ export function DynamicStepRenderer({ stepIndex, formData, onChange }: DynamicSt
         </Box>
       )}
 
-      <Box >
-
-
+      <Box>
         {step.inputs.map((input, idx) => {
           const key = `${input.name}-${idx}`;
 
           // Check parent condition
           if (input.parentCondition) {
             const parentValue = formData[input.parentCondition.name];
-            if (parentValue !== input.parentCondition.value) {
-              return null;
+            let matches = false;
+
+            if (input.parentCondition.operator === 'includesAny') {
+              // Check if parentValue includes any of the values in the array
+              const conditionValues = input.parentCondition.value as string[];
+              if (Array.isArray(parentValue)) {
+                matches = parentValue.some(val => conditionValues.includes(String(val)));
+              } else {
+                matches = conditionValues.includes(String(parentValue));
+              }
+            } else {
+              // Simple equality check
+              const conditionValue = input.parentCondition.value as string;
+              matches =
+                parentValue === conditionValue ||
+                (conditionValue === 'yes' && parentValue === true) ||
+                (conditionValue === 'no' && parentValue === false);
             }
+
+            if (!matches) return null;
           }
 
           switch (input.type) {
-            case 'radio':
+            case 'radio': {
+              const raw = formData[input.name];
+              const radioValue = input.multiSelect
+                ? Array.isArray(raw) ? raw : []
+                : typeof raw === 'string' ? raw : '';
               return (
                 <Box key={key}>
                   <RadioInput
@@ -60,11 +81,12 @@ export function DynamicStepRenderer({ stepIndex, formData, onChange }: DynamicSt
                     required={input.required}
                     multiSelect={input.multiSelect}
                     options={input.options}
-                    value={formData[input.name] as string | string[] || (input.multiSelect ? [] : '')}
-                    onChange={(value) => onChange(input.name, value as string)}
+                    value={radioValue}
+                    onChange={(value) => onChange(input.name, value)}
                   />
                 </Box>
               );
+            }
 
             case 'number': {
               const numValue = formData[input.name];
@@ -89,19 +111,18 @@ export function DynamicStepRenderer({ stepIndex, formData, onChange }: DynamicSt
               const defaultValue = input.default ?? input.min;
               return (
                 <Box key={key}>
-                <SliderInput
-                  key={key}
-                  label={input.label}
-                  hint={input.hint}
-                  tooltip={input.toolkit}
-                  min={input.min}
-                  max={input.max}
-                  step={1}
-                  value={typeof sliderValue === 'number' ? sliderValue : defaultValue}
-                  minLabel={input.minLabel}
-                  maxLabel={input.maxLabel}
-                  onChange={(value) => onChange(input.name, value)}
-                />
+                  <SliderInput
+                    label={input.label}
+                    hint={input.hint}
+                    tooltip={input.toolkit}
+                    min={input.min}
+                    max={input.max}
+                    step={1}
+                    value={typeof sliderValue === 'number' ? sliderValue : defaultValue}
+                    minLabel={input.minLabel}
+                    maxLabel={input.maxLabel}
+                    onChange={(value) => onChange(input.name, value)}
+                  />
                 </Box>
               );
             }

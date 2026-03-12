@@ -1,0 +1,246 @@
+{
+  "systems": [
+    {
+      "id": "EPS",
+      "name": "EPS",
+      "fullName": "EWI Pro EPS Graphite Insulation System",
+      "color": "hsl(210, 79%, 52%)",
+      "technical": {
+        "lambdaValue": 0.031,
+        "fireClass": "E (Euroclass)",
+        "minThicknessPerWallType": { "solidBrick": 90, "solidStone": 90, "concreteBlocks": 90, "cavityUnfilled": 80, "timberFrame": 70 },
+        "costRange": [100, 130]
+      },
+      "scores": {
+        "investmentCost": 100,
+        "thicknessEfficiency": 80,
+        "fireSafety": 20,
+        "breathability": 15,
+        "acoustics": 30,
+        "summerComfort": 30,
+        "installationRobustness": 90,
+        "environmental": 35
+      },
+      "constraints": {
+        "maxHeightM": 18,
+        "fireRatingAchievable": "E",
+        "excludeWhenFireClass": ["A1 only", "Non-combustible only", "A2 acceptable"]
+      },
+      "components": {
+        "primer": "EWI-301 Water-Based Substrate Primer / EWI-310 Universal Primer",
+        "adhesive": "EWI-220 EPS Basecoat (25kg)",
+        "basecoat": "EWI-220 EPS Basecoat / EWI-225 Premium Basecoat",
+        "mesh": "PXM-165706 Fibreglass Mesh 165g/m2",
+        "topcoatPrimer": "EWI-333 Topcoat Primer",
+        "topcoat": "EWI-075 Silicone Render (25kg)"
+      },
+      "technicalNotes": [
+        "Graphite-enhanced for premium thermal performance",
+        "BRE Green Guide Rating A+, 100% recyclable, zero ODP/GWP",
+        "Compressive strength 70 kPa, bending strength ≥ 75 kPa"
+      ],
+      "strengths": [
+        "Lowest cost per m²",
+        "Graphite-enhanced for premium thermal performance (lambda 0.031)",
+        "Easy to install — forgiving of average workmanship",
+        "Lightweight — only 1.13 kg/m², minimal structural load",
+        "Compressive strength 70 kPa, bending strength ≥ 75 kPa",
+        "BRE Green Guide Rating A+ — 100% recyclable, zero ODP/GWP",
+        "No reduction in performance over time"
+      ],
+      "considerations": [
+        "Euroclass E fire rating (Euroclass F without FRA additive)",
+        "Vapour diffusion resistance mu 20–40 — not suitable for moisture-sensitive substrates",
+        "Poor acoustic performance",
+        "Low thermal mass — limited summer comfort benefit"
+      ]
+    },
+    {
+      "id": "MW",
+      "name": "Mineral Wool",
+      "fullName": "EWI Pro ROCKWOOL Dual Density System",
+      "color": "hsl(38, 92%, 50%)",
+      "technical": {
+        "lambdaValue": 0.036,
+        "fireClass": "A1 (Non-combustible)",
+"minThicknessPerWallType": { "solidBrick": 100, "solidStone": 110, "concreteBlocks": 100, "cavityUnfilled": 90, "timberFrame": 80 },
+        "costRange": [140, 170]
+      },
+      "scores": {
+        "investmentCost": 60,
+        "thicknessEfficiency": 55,
+        "fireSafety": 95,
+        "breathability": 85,
+        "acoustics": 100,
+        "summerComfort": 50,
+        "installationRobustness": 75,
+        "environmental": 70
+      },
+      "constraints": {
+        "maxHeightM": null,
+        "fireRatingAchievable": "A1",
+        "excludeWhenFireClass": []
+      },
+      "components": {
+        "primer": "EWI-301 Water-Based Substrate Primer / EWI-310 Universal Primer",
+        "adhesive": "EWI-225 Premium Basecoat (25kg)",
+        "basecoat": "EWI-225 Premium Basecoat",
+        "mesh": "PXM-165706 Fibreglass Mesh 165g/m2",
+        "topcoatPrimer": "EWI-333 Topcoat Primer",
+        "topcoat": "EWI-075 Silicone Render (25kg)"
+      },
+      "technicalNotes": [
+        "Non-combustible A1 — meets all fire regulations, no height restriction",
+        "Up to 8 dB Rw acoustic improvement (substrate-dependent)",
+        "Dual density slab with 'THIS SIDE UP' for installation accuracy",
+        "Fibres knit together at butt joints, eliminating thermal gaps"
+      ],
+      "strengths": [
+        "Non-combustible A1 — meets all fire regulations, no height restriction",
+        "Excellent acoustic insulation — up to 8 dB Rw improvement (substrate-dependent)",
+        "Vapour resistance similar to still air — exceptional breathability",
+        "Dual density slab with branded 'THIS SIDE UP' for installation accuracy",
+        "Fibres knit together at butt joints, eliminating thermal gaps"
+      ],
+      "considerations": [
+        "Heavier than EPS — may need enhanced fixings",
+        "Thicker for equivalent U-value vs PIR",
+        "Requires careful detailing at junctions",
+        "Mid-range cost"
+      ]
+    },
+    {
+      "id": "PIR",
+      "name": "Kingspan K5",
+      "fullName": "EWI Pro Kingspan Kooltherm K5 System",
+      "color": "hsl(350, 89%, 60%)",
+      "technical": {
+        "lambdaValue": 0.021,
+        "fireClass": "C-s2,d0 (Euroclass)",
+        "minThicknessPerWallType": { "solidBrick": 60, "solidStone": 60, "concreteBlocks": 60, "cavityUnfilled": 50, "timberFrame": 50 },
+        "costRange": [140, 170]
+      },
+      "scores": {
+        "investmentCost": 40,
+        "thicknessEfficiency": 95,
+        "fireSafety": 40,
+        "breathability": 15,
+        "acoustics": 30,
+        "summerComfort": 30,
+        "installationRobustness": 60,
+        "environmental": 30
+      },
+      "constraints": {
+        "maxHeightM": null,
+        "fireRatingAchievable": "C-s2,d0",
+        "excludeWhenFireClass": ["A1 only", "Non-combustible only"]
+      },
+      "components": {
+        "primer": "EWI-301 Water-Based Substrate Primer / EWI-310 Universal Primer",
+        "adhesive": "EWI-225 Premium Basecoat (25kg)",
+        "basecoat": "EWI-225 Premium Basecoat",
+        "mesh": "PXM-165706 Fibreglass Mesh 165g/m2",
+        "reinforcementDiscs": "EWI-746 Reinforcement Discs",
+        "topcoatPrimer": "EWI-333 Topcoat Primer",
+        "topcoat": "EWI-075 Silicone Render (25kg)"
+      },
+      "technicalNotes": [
+        "Premium lambda 0.021 W/mK — thinnest build-up of any EWI system",
+        "Thermal bridging mitigation — ideal where space/thickness is critical",
+        "Compressive strength exceeding 100 kPa",
+        "Requires EWI-746 Reinforcement Discs for mechanical fixings"
+      ],
+      "strengths": [
+        "Premium lambda 0.021 W/mK — thinnest build-up of any EWI system",
+        "Ideal where space/thickness is critical",
+        "Good structural rigidity",
+        "Compressive strength exceeding 100 kPa"
+      ],
+      "considerations": [
+        "Higher cost per m²",
+        "Euroclass C-s2,d0 — fire restrictions apply by building type, height and location",
+        "Resistant to passage of water vapour — condensation risk analysis required per project",
+        "Less forgiving of installation errors"
+      ]
+    },
+    {
+      "id": "WF",
+      "name": "Woodfibre",
+      "fullName": "EWI Pro STEICO Protect Dry Woodfibre System",
+      "color": "hsl(142, 71%, 35%)",
+      "technical": {
+        "lambdaValue": 0.037,
+        "fireClass": "E (Euroclass)",
+        "minThicknessPerWallType": { "solidBrick": 110, "solidStone": 110, "concreteBlocks": 110, "cavityUnfilled": 90, "timberFrame": 80 },
+        "costRange": [160, 200]
+      },
+      "scores": {
+        "investmentCost": 30,
+        "thicknessEfficiency": 50,
+        "fireSafety": 35,
+        "breathability": 95,
+        "acoustics": 100,
+        "summerComfort": 95,
+        "installationRobustness": 45,
+        "environmental": 100
+      },
+      "constraints": {
+        "maxHeightM": 18,
+        "fireRatingAchievable": "E",
+        "excludeWhenFireClass": ["A1 only", "Non-combustible only", "A2 acceptable"]
+      },
+      "components": {
+        "primer": "EWI-301 Water-Based Substrate Primer / EWI-310 Universal Primer",
+        "adhesive": "EWI-225 Premium Basecoat (25kg)",
+        "basecoat": "EWI-225 Premium Basecoat",
+        "mesh": "PXM-165706 Fibreglass Mesh 165g/m2",
+        "topcoatPrimer": "EWI-333 Topcoat Primer",
+        "topcoat": "EWI-075 Silicone Render (25kg)"
+      },
+      "technicalNotes": [
+        "Summer overheating protection - specific heat capacity 2,100 J/(kg-K)",
+        "Vapour diffusion resistance mu = 3 (near open air)",
+        "FSC/IBR Certified — lowest embodied carbon",
+        "Ideal for timber frame, CLT and masonry renovation"
+      ],
+      "strengths": [
+        "Exceptional breathability — vapour diffusion resistance mu = 3 (near open air)",
+        "Specific heat capacity 2,100 J/(kg·K) at 110 kg/m³ — superior summer overheating protection",
+        "Best environmental credentials — low embodied carbon",
+        "Good acoustic properties — high density (110 kg/m³) provides mass-based sound reduction",
+        "Ideal for timber frame, CLT and masonry renovation"
+      ],
+      "considerations": [
+        "Highest cost per m²",
+        "Lambda 0.037 W/mK requires thickest insulation build-up",
+        "Requires skilled installation",
+        "Limited fire performance — Euroclass E"
+      ]
+    }
+  ],
+  "contextualAdjustments": {
+    "moisture": { "EPS": -10, "MW": 5, "PIR": -5, "WF": 10 },
+    "heritage": { "EPS": -15, "MW": -3, "PIR": -10, "WF": 12 },
+    "solid": { "EPS": -5, "MW": 3, "PIR": -5, "WF": 8 },
+    "stdWork": { "EPS": 5, "MW": 0, "PIR": -5, "WF": -8 },
+    "speed": { "EPS": 5, "MW": 0, "PIR": 2, "WF": -5 },
+    "lowBudget": { "EPS": 15, "MW": -15, "PIR": -15, "WF": -25 },
+    "payMore": { "EPS": -3, "MW": 2, "PIR": 3, "WF": 5 },
+    "oldBuild": { "EPS": -5, "MW": 2, "PIR": -3, "WF": 8 },
+    "residential": { "EPS": 0, "MW": -5, "PIR": -3, "WF": -3 },
+    "preSolidCombo": { "EPS": -20, "MW": 0, "PIR": -15, "WF": 0 },
+    "thicknessBonus": { "EPS": 0, "MW": 0, "PIR": 10, "WF": 0 },
+    "residentialLowRise": { "EPS": 25, "MW": 0, "PIR": 25, "WF": 0 },
+    "residentialSuppression": { "EPS": 0, "MW": -10, "PIR": 0, "WF": -15 }
+  },
+  "featureLabels": {
+    "investmentCost": "Investment Cost",
+    "thicknessEfficiency": "Thickness Efficiency",
+    "fireSafety": "Fire Safety",
+    "breathability": "Breathability",
+    "acoustics": "Acoustics",
+    "summerComfort": "Summer Comfort",
+    "installationRobustness": "Installation Robustness",
+    "environmental": "Environmental"
+  }
+}

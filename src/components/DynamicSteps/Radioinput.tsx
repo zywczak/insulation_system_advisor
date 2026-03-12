@@ -31,16 +31,20 @@ export function RadioInput({ label, required, multiSelect, options, value, onCha
   const handleChange = (val: string) => {
     if (multiSelect) {
       const current = selected as string[];
-      const exclusiveValues = new Set(['none', 'dont_know']);
+      // Check if value is exclusive (case-insensitive comparison)
+      const isExclusive = (v: string) => {
+        const lower = v.toLowerCase().replace(/[_\s]/g, ''); // Remove underscores and spaces
+        return lower === 'none' || lower === 'dontknow';
+      };
 
       let next: string[];
 
-      if (exclusiveValues.has(val)) {
+      if (isExclusive(val)) {
         // jeśli kliknięto none/dont_know — odznacz wszystko inne, zostaw tylko to
         next = current.includes(val) ? [] : [val];
       } else {
         // jeśli kliknięto normalną opcję — odznacz none/dont_know
-        const withoutExclusive = current.filter((v) => !exclusiveValues.has(v));
+        const withoutExclusive = current.filter((v) => !isExclusive(v));
         next = withoutExclusive.includes(val)
           ? withoutExclusive.filter((v) => v !== val)
           : [...withoutExclusive, val];

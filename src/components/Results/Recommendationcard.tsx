@@ -6,43 +6,59 @@ import {
 } from "@mui/material";
 import InsightsIcon from "../../assets/insights.svg";
 
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+type Tier = "primary" | "alternative" | "aspirational" | "viable";
+
 interface RecommendationCardProps {
-  readonly productBrand: string;
+  readonly tier: Tier;
   readonly productName: string;
   readonly score: number;
   readonly keyStrengths: string[];
   readonly considerations: string[];
-  readonly additionalInfo?: string;
+  readonly technicalNotes?: string[]; 
   readonly expertInsight?: string;
   readonly costRange: string;
   readonly fireClass: string;
   readonly lambda: string;
   readonly minThickness: string;
+  readonly whatWouldChange?: string;
+  readonly systemColor?: string;
+}
+
+// ─── Tier config ─────────────────────────────────────────────────────────────
+
+const TIER_CONFIG: Record<Tier, { label: string; color: string }> = {
+  primary:      { label: "Primary Recommendation",            color: "#0CA30A" },
+  alternative:  { label: "Strong Alternative",                color: "#437A8E" },
+  aspirational: { label: "Aspirational / Performance Upgrade",color: "#8B959A" },
+  viable:       { label: "Also Eligible",                     color: "#B0B0B0" },
+};
+
+// ─── Component ───────────────────────────────────────────────────────────────
+
+function getScoreColor(score: number): string {
+  if (score <= 10) return "#EF3939";
+  if (score <= 40) return "#f5b300";
+  return "#0CA30A";
 }
 
 export default function RecommendationCard({
-  productBrand,
+  tier,
   productName,
   score,
   keyStrengths,
   considerations,
-  additionalInfo,
+  technicalNotes, 
   expertInsight,
   costRange,
   fireClass,
   lambda,
   minThickness,
+  whatWouldChange,
+  systemColor,
 }: RecommendationCardProps) {
-  let scoreColor: string;
-
-  if (score <= 10) {
-    scoreColor = "#EF3939";
-  } else if (score <= 40) {
-    scoreColor = "#f5b300";
-  } else {
-    scoreColor = "#0CA30A";
-}
-
+  const { label, color } = TIER_CONFIG[tier];
 
   return (
     <Paper
@@ -55,288 +71,250 @@ export default function RecommendationCard({
         fontFamily: "'DM Sans', sans-serif",
       }}
     >
-
       <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}>
-        {/* Left content */}
-        
-        <Box sx={{ flex: 1 }}>
-          {/* Badge header */}
-     <Box
-  sx={{
-    bgcolor: "#437A8E",
-    height: "41px",
-    pl: { xs: "12px", sm: "24px" },
-    display: "flex",
-    alignItems: "center"
-  }}
->
-  <Typography
-    sx={{
-      fontFamily: "Barlow",
-      color: "#fff",
-      fontSize: "20px",
-      fontWeight: 700,
-      letterSpacing: "-1px"
-    }}
-  >
-    Aspirational / Performance Upgrade
-  </Typography>
-</Box>
 
+        {/* ── Left content ── */}
+        <Box sx={{ 
+  flex: 1,
+  borderBottom: { xs: "none", md: "3px solid #E5E5E5" },  // ← przenieś tutaj
+  display: "flex",
+  flexDirection: "column",
+}}>
 
-          {/* Title + score */}
-<Box
-  sx={{
-    display: "flex",
-    alignItems: "center",
-    height: "72px",
-    pl: { xs: "12px", sm: "24px" },
-    pr: "100px",
-    backgroundColor: "#F8F8F8",
-    borderTop: "3px solid #E5E5E5",
-    borderBottom: "1px solid #E5E5E5",
-    position: "relative",
-  }}
->
-  <Typography
-    variant="h6"
-    sx={{
-      fontFamily: "Barlow",
-      fontWeight: 400,
-      fontSize: "20px",
-      letterSpacing: "-1px",
-    }}
-  >
-    <Box component="span" sx={{ fontWeight: 600 }}>
-      {productBrand}{" "}
-    </Box>
-    {productName}
-  </Typography>
-
-  <Box
-    sx={{
-      position: "absolute",
-      backgroundColor: "#fff",
-      right:  "24px",
-      width: "113px",
-      height: "55px",
-      '@media (max-width:980px)': {
-          fontSize: "16px",
-          right: "3px",
-          width: "69px",
-          height: "48px",
-        },
-        '@media (max-width:900px)': {
-          fontSize: "32px",
-          right: "24px",
-          width: "113px",
-          height: "55px",
-        },
-        '@media (max-width:620px)': {
-          fontSize: "16px",
-          right: "3px",
-          width: "69px",
-          height: "48px",
-        },
-      bottom: "-1px",
-      border: "1px solid #E5E5E5",
-      borderBottom: "none",
-      borderTopRightRadius: "8px",
-      borderTopLeftRadius: "8px",
-      textAlign: "center",
-    }}
-  >
-    <Typography
-      sx={{
-        fontFamily: "Inter",
-        fontSize: "32px",
-        '@media (max-width:980px)': {
-          fontSize: "16px"
-        },
-        '@media (max-width:900px)': {
-          fontSize: "32px"
-        },
-        '@media (max-width:620px)': {
-          fontSize: "16px"
-        },
-        fontWeight: 700,
-        letterSpacing: "0px",
-        position: "absolute",
-        bottom: { xs: "12px", sm: "0px" },
-        left: "50%",
-        transform: "translateX(-50%)",
-        color: scoreColor,
-      }}
-    >
-      {score}
-      <Box
-        component="span"
-        sx={{
-          fontSize: { xs: "12px", sm: "16px" },
-          fontWeight: 700,
-          color: "#8B959A",
-        }}
-      >
-        /100
-      </Box>
-    </Typography>
-  </Box>
-</Box>
-
-
+          {/* Tier badge */}
           <Box
-  sx={{
-    display: "flex",
-    flexDirection: "column",
-    gap: "16px",
-    p: "24px",
-    px: {xs: "12px", sm: "24px"},
-    "@media (min-width:1045px)": {
-      flexDirection: "row",
-    },
-  }}
->
+            sx={{
+              bgcolor: color,
+              height: "41px",
+              pl: { xs: "12px", sm: "24px" },
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "Barlow",
+                color: "#fff",
+                fontSize: "20px",
+                fontWeight: 700,
+                letterSpacing: "-1px",
+              }}
+            >
+              {label}
+            </Typography>
+          </Box>
+
+          {/* Product title + score */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              height: "72px",
+              pl: { xs: "12px", sm: "24px" },
+              pr: "100px",
+              backgroundColor: "#F8F8F8",
+              borderTop: "3px solid #E5E5E5",
+              borderBottom: "1px solid #E5E5E5",
+              position: "relative",
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontFamily: "Barlow",
+                fontWeight: 400,
+                fontSize: "20px",
+                letterSpacing: "-1px",
+              }}
+            >
+              <Box component="span" sx={{ fontWeight: 600, color:"#1D1D1D" }}>
+                {productName.split(" ").slice(0, 3).join(" ")}{" "}
+              </Box>
+              {productName.split(" ").slice(3).join(" ")}
+            </Typography>
+
+            <Box
+              sx={{
+                position: "absolute",
+                backgroundColor: "#fff",
+                right: "24px",
+                width: "113px",
+                height: "55px",
+                "@media (max-width:980px)": { fontSize: "16px", right: "3px", width: "69px", height: "48px" },
+                "@media (max-width:900px)": { fontSize: "32px", right: "24px", width: "113px", height: "55px" },
+                "@media (max-width:620px)": { fontSize: "16px", right: "3px", width: "69px", height: "48px" },
+                bottom: "-1px",
+                border: "1px solid #E5E5E5",
+                borderBottom: "none",
+                borderTopRightRadius: "8px",
+                borderTopLeftRadius: "8px",
+                textAlign: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "Inter",
+                  fontSize: "32px",
+                  "@media (max-width:980px)": { fontSize: "16px" },
+                  "@media (max-width:900px)": { fontSize: "32px" },
+                  "@media (max-width:620px)": { fontSize: "16px" },
+                  fontWeight: 700,
+                  letterSpacing: "0px",
+                  position: "absolute",
+                  bottom: { xs: "12px", sm: "0px" },
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  color: getScoreColor(score),
+                }}
+              >
+                {score}
+                <Box component="span" sx={{ fontSize: { xs: "12px", sm: "16px" }, fontWeight: 700, color: "#8B959A" }}>
+                  /100
+                </Box>
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Strengths + Considerations */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              p: "24px",
+              px: { xs: "12px", sm: "24px" },
+              "@media (min-width:1045px)": { flexDirection: "row" },
+            }}
+          >
             <Box sx={{ flex: 1 }}>
-              <Typography sx={{ fontFamily: "Inter", fontWeight: 700, fontSize: "14px", letterSpacing: "0px", color: "#1D1D1D", mb: "8px" }}>Key Strenghts</Typography>
-              <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: 'disc' }}>
+              <Typography sx={{ fontFamily: "Inter", fontWeight: 700, fontSize: "14px", color: "#1D1D1D", mb: "8px" }}>
+                Key Strengths
+              </Typography>
+              <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: "disc" }}>
                 {keyStrengths.map((s) => (
-                  <Box component="li" key={s} sx={{ fontFamily: "Inter", fontWeight: 400, fontSize: "12px", letterSpacing: "0px", color: "#1D1D1D" }}>{s}</Box>
+                  <Box component="li" key={s} sx={{ fontFamily: "Inter", fontWeight: 400, fontSize: "12px", color: "#1D1D1D" }}>
+                    {s}
+                  </Box>
                 ))}
               </Box>
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography sx={{ fontFamily: "Inter", fontWeight: 700, fontSize: "14px", letterSpacing: "0px", color: "#1D1D1D", mb: "8px" }}>Considerations</Typography>
-              <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: 'disc' }}>
+              <Typography sx={{ fontFamily: "Inter", fontWeight: 700, fontSize: "14px", color: "#1D1D1D", mb: "8px" }}>
+                Considerations
+              </Typography>
+              <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: "disc" }}>
                 {considerations.map((c) => (
-                  <Box component="li" key={c} sx={{ fontFamily: "Inter", fontWeight: 400, fontSize: "12px", letterSpacing: "0px", color: "#1D1D1D" }}>{c}</Box>
+                  <Box component="li" key={c} sx={{ fontFamily: "Inter", fontWeight: 400, fontSize: "12px", color: "#1D1D1D" }}>
+                    {c}
+                  </Box>
                 ))}
               </Box>
             </Box>
           </Box>
 
-          {/* Additional info */}
-          {additionalInfo && (
+          {/* Additional info
+          {whatWouldChange && (
             <Box sx={{ mb: 2.5, px: { xs: "12px", sm: "24px" } }}>
               <Typography sx={{ fontFamily: "Inter", fontWeight: 700, fontSize: "14px", letterSpacing: "0px", color: "#1D1D1D", mb: "8px" }}>Additional info</Typography>
-              <Typography sx={{ fontFamily: "Inter", fontWeight: 400, fontSize: "12px", letterSpacing: "0px", color: "#1D1D1D" }}>{additionalInfo}</Typography>
+              <Typography sx={{ fontFamily: "Inter", fontWeight: 400, fontSize: "12px", letterSpacing: "0px", color: "#1D1D1D" }}>{whatWouldChange}</Typography>
             </Box>
-          )}
+          )} */}
 
-          <Box sx={{ borderBottom: {xs: "none", md: "3px solid #E5E5E5" } }}>
-  {/* Expert insight */}
-  {expertInsight && (
-    <Box
-      sx={{
-        display: "flex",
-        mx: { xs: "12px", sm: "24px" },
-        mb: "24px",
-        position: "relative",
-      }}
-    >
-      <Box
-  sx={{
-    width: { xs: "58px", sm: "87px" },
-    bgcolor: "#0CA30A",
-    alignSelf: "stretch",
-    borderRadius: "8px",
-    flexShrink: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
-    zIndex: 2
-  }}
->
-        <Box component="img" src={InsightsIcon} alt="Insights" />
-      </Box>
+          <Box >
+            {/* Expert insight */}
+            {whatWouldChange && (
+              <Box sx={{ display: "flex", mx: { xs: "12px", sm: "24px" }, mb: "24px", position: "relative" }}>
+                <Box
+                  sx={{
+                    width: { xs: "58px", sm: "87px" },
+                    bgcolor: "#0CA30A",
+                    alignSelf: "stretch",
+                    borderRadius: "8px",
+                    flexShrink: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "relative",
+                    zIndex: 2,
+                  }}
+                >
+                  <Box component="img" src={InsightsIcon} alt="Insights" />
+                </Box>
+                <Box
+                  sx={{
+                    px: { xs: "12px", sm: "24px" },
+                    border: "1px solid #E5E5E5",
+                    ml: "-8px",
+                    py: "20px",
+                    borderTopRightRadius: "8px",
+                    borderBottomRightRadius: "8px",
+                    bgcolor: "#F8F8F8",
+                    flex: 1,
+                  }}
+                >
+                  <Typography sx={{ fontFamily: "Inter", fontWeight: 700, fontSize: "12px", color: "#1D1D1D" }}>
+                    Expert Insights
+                  </Typography>
+                  <Typography sx={{ fontFamily: "Inter", fontWeight: 400, fontSize: "12px", color: "#1D1D1D" }}>
+                    {whatWouldChange}
+                  </Typography>
+                </Box>
+              </Box>
+            )}
+          </Box>
+        </Box>
 
-      <Box sx={{ px: { xs: "12px", sm: "24px" }, border: "1px solid #E5E5E5", ml: "-8px", py: "20px", 
-              borderTopRightRadius: "8px",
-          borderBottomRightRadius: "8px",
-      bgcolor: "#F8F8F8", flex: 1}}>
-        <Typography sx={{ fontFamily: "Inter", fontWeight: 700, fontSize: "12px", letterSpacing: "0px", color: "#1D1D1D" }}>
-          Expert Insights
-        </Typography>
-        <Typography sx={{ fontFamily: "Inter", fontWeight: 400, fontSize: "12px", letterSpacing: "0px", color: "#1D1D1D" }}>
-          {expertInsight}
-        </Typography>
-      </Box>
-    </Box>
-  )}
-</Box>
-</Box>
-       
-        {/* Right stats panel */}
-       <Box
-  sx={{
-    borderTopRightRadius: "20px",
-    borderBottomRightRadius: "20px",
-    bgcolor: "#0CA30A",
-    px: { xs: "60px", md: "28px" },
-    py: { xs: "34px", md: "28px" },
-    width: { md: 282 },
-    mx: { xs: "12px", md: 0 },
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    gap: { xs: 2, md: 0 },
-    justifyContent: "center", 
-  }}
->
-  {[
-    { label: "COST RANGE", value: costRange },
-    { label: "FIRE CLASS", value: fireClass },
-    { label: "LAMBDA", value: lambda },
-    { label: "MIN. THICKNESS (U=0.3)", value: minThickness },
-  ].map(({ label, value }, i, arr) => (
-    <Box
-      key={label}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        pb: "9px",
-        borderBottom: i < arr.length - 1 ? "1px solid #48D858" : "none",
-        pt: { md: i > 0 ? "10px" : 0 },
-      }}
-    >
-      <Typography
-        sx={{
-          fontFamily: "Inter",
-          fontSize: "12px",
-          fontWeight: 400,
-          letterSpacing: "0px",
-          color: "#FFFFFF",
-          mb: "8px",
-          textTransform: "uppercase",
-        }}
-      >
-        {label}
-      </Typography>
+        {/* ── Right stats panel ── */}
+        <Box
+          sx={{
+            borderTopRightRadius: "20px",
+            borderBottomRightRadius: "20px",
+            bgcolor: color,
+            px: { xs: "60px", md: "28px" },
+            py: { xs: "34px", md: "28px" },
+            width: { md: 282 },
+            mx: { xs: "12px", md: 0 },
+            display: "flex",
+            flexDirection: "column",
+            gap: { xs: 2, md: 0 },
+            justifyContent: "center",
+          }}
+        >
+          {[
+            { label: "COST RANGE",              value: costRange },
+            { label: "FIRE CLASS",              value: fireClass },
+            { label: "LAMBDA",                  value: lambda },
+            { label: "MIN. THICKNESS (U=0.3)",  value: minThickness },
+          ].map(({ label, value }, i, arr) => (
+            <Box
+              key={label}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                pb: "9px",
+                borderBottom: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.3)" : "none",
+                pt: { md: i > 0 ? "10px" : 0 },
+              }}
+            >
+              <Typography sx={{ fontFamily: "Inter", fontSize: "12px", fontWeight: 400, color: "#FFFFFF", mb: "8px", textTransform: "uppercase" }}>
+                {label}
+              </Typography>
+              <Typography sx={{ fontFamily: "Inter", fontSize: "16px", fontWeight: 700, color: "#FFFFFF" }}>
+                {value}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
 
-      <Typography
-        sx={{
-          fontFamily: "Inter",
-          fontSize: "16px",
-          fontWeight: 700,
-          letterSpacing: "0px",
-          color: "#FFFFFF",
-        }}
-      >
-        {value}
-      </Typography>
-    </Box>
-  ))}
-</Box>
-
- <Divider
-  sx={{
-    border: "3px solid #E5E5E5",
-    mt: "24px",
-    mx: "12px",
-    display: { xs: "block", md: "none" }
-  }}
-/>
+        <Divider
+          sx={{
+            border: "3px solid #E5E5E5",
+            mt: "24px",
+            mx: "12px",
+            display: { xs: "block", md: "none" },
+          }}
+        />
       </Box>
     </Paper>
   );

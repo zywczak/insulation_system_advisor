@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
-import { CalculationResults, CalculatorData } from '@/lib/calculator/types';
-import { ResultsActions } from './ResultsActions';
+import { AssessmentResult, AssessmentAnswers, SystemProfile } from '@/types/assessment';
+import { SYSTEMS } from '@/data/systems';
+import { getExpertInsights } from '@/engine/expertInsights';
 import TechnicalDisclaimer from './Technicaldisclaimer';
 import QuoteForm from './Quoteform';
 import RequiredNextSteps from './Requirednextsteps';
@@ -9,77 +10,75 @@ import RecommendationCard from './Recommendationcard';
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface Step5ResultsProps {
-  readonly results: CalculationResults | null;
-  readonly data: CalculatorData;
-  readonly onGetQuote: () => void;
+  readonly results: AssessmentResult | null;
+  readonly data: AssessmentAnswers;
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function mapWallType(wallType: string | null): string {
+  switch (wallType) {
+    case 'Solid Brick Walls':      return 'solidBrick';
+    case 'Solid Stone Walls':      return 'solidStone';
+    case 'Concrete Blocks':        return 'concreteBlocks';
+    case 'Cavity Walls - Unfilled':return 'cavityUnfilled';
+    case 'Timber Frame':           return 'timberFrame';
+    default:                       return 'solidStone';
+  }
+}
+
+function getMinThickness(sys: SystemProfile, answers: AssessmentAnswers): string {
+  const key = mapWallType(answers.wallType);
+  const mm = sys.minThicknessPerWallType[key] ?? sys.minThicknessFor03U;
+  return `${mm}mm`;
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-export function Step5Results({ results, data, onGetQuote }: Step5ResultsProps) {
+export function Step5Results({ results, data }: Step5ResultsProps) {
+  if (!results) return null;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
 
-      <RecommendationCard
-              productBrand="EWI Pro ROCKWOOL"
-              productName="Dual Density System"
-              score={49}
-              keyStrengths={[
-                'Acoustic performance',
-                'Breathability & moisture management',
-                'Environmental credentials',
-                'Good match for moisture-risk building',
-                'Compatible with heritage construction',
-              ]}
-              considerations={[
-                'Heavier than EPS — may need enhanced fixings',
-                'Thicker for equivalent U-value vs PIR',
-              ]}
-              additionalInfo="Kingspan K5 (C-s2,d0) does not meet the required A1 only fire classification."
-              expertInsight="UK Building Regs require non-combustible systems for this height."
-              costRange="£140–170/m²"
-              fireClass="A1 (Non-combustible)"
-              lambda="0.036 W/mK"
-              minThickness="100mm"
-            />
-      
-            <RecommendationCard
-              productBrand="EWI Pro Kingspan"
-              productName="Kooltherm K5 System"
-              score={2}
-              keyStrengths={['Thickness efficiency']}
-              considerations={[
-                'Kingspan K5 (C-s2,d0) does not meet the required A1 only fire classification.',
-              ]}
-              additionalInfo="Kingspan K5 (C-s2,d0) does not meet the required A1 only fire classification."
-              expertInsight="UK Building Regs require non-combustible systems for this height."
-              costRange="£140–170/m²"
-              fireClass="A1 (Non-combustible)"
-              lambda="0.036 W/mK"
-              minThickness="100mm"
-            />
-      
-            {/* ── Required Next Steps ── */}
-            <RequiredNextSteps />
-      
-            {/* ── Quote Form ── */}
-            <QuoteForm
-              onSubmit={(data) => console.log('Quote submitted:', data)}
-              onDownload={() => console.log('Download')}
-              onRestart={() => console.log('Restart')}
-            />
-      
-            {/* ── Technical Disclaimer ── */}
-            <TechnicalDisclaimer />
-            
-      {results && <ResultsActions data={data} results={results} onGetQuote={onGetQuote} />}
-      
-      {results && (
-        <Box sx={{ p: 3, textAlign: 'center' }}>
-          <p>Results calculated successfully! Component placeholders coming soon.</p>
-        </Box>
-      )}
+      {/* ── Recommendation Cards ── */}
+      {results.recommendations.map((rec) => {
+        const sys = SYSTEMS[rec.system.systemId];
+        console.log(sys);
+        const insights = getExpertInsights(rec.system.systemId, data);
+        const expertInsight = insights.length > 0 ? insights[0].message : undefined;
+
+        return (
+          <RecommendationCard
+            key={rec.tier}
+            tier={rec.tier}
+            productName={sys.fullName}
+            score={rec.system.totalScore}
+            keyStrengths={rec.reasons}
+            considerations={rec.risks}
+            technicalNotes={sys.technicalNotes}
+            expertInsight={expertInsight}
+            costRange={`£${sys.typicalCostRange[0]}–${sys.typicalCostRange[1]}/m²`}
+            fireClass={sys.fireClass}
+            lambda={`${sys.lambdaValue} W/mK`}
+            minThickness={getMinThickness(sys, data)}
+            whatWouldChange={rec.whatWouldChange}
+          />
+        );
+      })}
+
+      {/* ── Required Next Steps ── */}
+      <RequiredNextSteps steps={results.nextSteps} />
+
+      {/* ── Quote Form ── */}
+      <QuoteForm
+        results={results}
+        answers={data}
+      />
+
+      {/* ── Technical Disclaimer ── */}
+      <TechnicalDisclaimer />
+
     </Box>
   );
 }
